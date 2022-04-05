@@ -6,7 +6,6 @@ import spark.Request;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import static spark.Spark.*;
 
@@ -20,6 +19,9 @@ public class App {
         SecureURLReader.connection();
 
         generateUsers();
+
+        staticFileLocation("/public");
+
 
         //API: secure(keystoreFilePath, keystorePassword, truststoreFilePath, truststorePassword);
         secure("keystores/ecikeystore.p12", "password", null, null);
@@ -40,6 +42,12 @@ public class App {
                     return "OK";
                 });
         before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
+
+        get("/", (req, res) -> {
+            res.redirect("/index.html");
+            res.status(200);
+            return null;
+        });
 
         post("/login", (req, res) -> {
             res.type("application/json");
@@ -93,8 +101,11 @@ public class App {
         try{
             if((boolean)req.session().attribute("login")){
 //                System.out.println("getSession");
-                System.out.println("getSession: " + SecureURLReader.readURL("https://localhost:2703/hello"));
-                return SecureURLReader.readURL("https://localhost:2703/hello");
+//                System.out.println("getSession: " + SecureURLReader.readURL("https://localhost:2703/hello"));
+//                return SecureURLReader.readURL("https://localhost:2703/hello");
+
+                System.out.println("getSession: " + SecureURLReader.readURL("https://ec2-54-205-27-252.compute-1.amazonaws.com:2703/hello"));
+                return SecureURLReader.readURL("https://ec2-54-205-27-252.compute-1.amazonaws.com:2703/hello");
             }
         }catch(Exception e){
             System.out.println(e);
