@@ -1,5 +1,7 @@
-const BASE_LOGIN = "https://localhost:4567"
-const BASE_SERVER = "https://localhost:2703"
+//const BASE_LOGIN = "https://localhost:4567"
+const BASE_LOGIN = "https://ec2-54-205-27-252.compute-1.amazonaws.com:4567/"
+
+
 
 
 
