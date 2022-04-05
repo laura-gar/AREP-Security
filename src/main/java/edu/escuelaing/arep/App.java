@@ -71,21 +71,25 @@ public class App {
                 req.session().attribute("login", true);
 //                System.out.println("Login successful! ");
                 responses.add("Login successful!");
-                responses.add(SecureURLReader.readURL("https://localhost:2703/hello"));
+//                responses.add(SecureURLReader.readURL("https://localhost:2703/hello"));
+                responses.add(getSession(req));
                 return responses;
             }
 //            System.out.println("Wrong user or password");
             responses.add("Wrong password");
-            responses.add("Not Logged");
+//            responses.add("Not Logged");
+            responses.add(getSession(req));
             return responses;
         }
 //        System.out.println("User doesn't exists");
         responses.add("User doesn't exists");
-        responses.add("Not Logged");
+//        responses.add("Not Logged");
+        responses.add(getSession(req));
         return responses;
     }
 
     private static String getSession(Request req){
+        req.session();
         try{
             if((boolean)req.session().attribute("login")){
 //                System.out.println("getSession");
