@@ -9,9 +9,6 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.net.ssl.SSLContext;
@@ -21,6 +18,10 @@ import javax.net.ssl.TrustManagerFactory;
 public class SecureURLReader {
 
 //    public static void main (String [] args ){
+
+    /**
+     * Generate a secure connection
+     */
     public static void connection() {
         try {
 
@@ -73,6 +74,12 @@ public class SecureURLReader {
 
     }
 
+
+    /**
+     * Read an URL
+     * @param sitetoread, URl to read
+     * @return returned statement from URL read
+     */
     public static String readURL(String sitetoread) {
 //        connection();
         try {

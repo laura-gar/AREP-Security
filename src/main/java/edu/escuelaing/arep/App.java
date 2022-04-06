@@ -9,23 +9,36 @@ import java.util.HashMap;
 
 import static spark.Spark.*;
 
+/**
+ * Login Server class
+ * @author Laura García
+ * @version 1.0
+ */
 public class App {
 
     private static HashMap<String, Integer> users = new HashMap<String, Integer>();
 
+    /**
+     * Main method
+     * @param args
+     */
     public static void main( String[] args ) {
 
-
+        //Create secure connection
         SecureURLReader.connection();
 
+        //Generate temporally users
         generateUsers();
 
+        //Set file location
         staticFileLocation("/public");
 
+        //Get environment port
+        port(getPort());
 
         //API: secure(keystoreFilePath, keystorePassword, truststoreFilePath, truststorePassword);
         secure("keystores/ecikeystore.p12", "password", null, null);
-        port(getPort());
+
         get("/hello", (req, res) -> "Hello World");
 
         // Allow CORS
@@ -66,6 +79,12 @@ public class App {
 
     }
 
+
+    /**
+     * Method that allow the log in
+     * @param req, POST request sent
+     * @return Array with responses
+     */
     private static ArrayList<String> login(Request req){
         User user = (new Gson()).fromJson(req.body(), User.class);
 
@@ -96,6 +115,12 @@ public class App {
         return responses;
     }
 
+
+    /**
+     * Generate the communication with other server
+     * @param req, POST request sent
+     * @return returned statement from server
+     */
     private static String getSession(Request req){
         req.session();
         try{
@@ -121,17 +146,34 @@ public class App {
 
 
 
-    //Methods
+    //Other necessary methods
 
+    /**
+     * Generate a hashCode to encode password
+     * @param password, String with the password
+     * @return encoded password
+     */
     private static Integer generateCode(String password){
         return password.hashCode();
     }
 
+
+    /**
+     * Create users from temporally database
+     */
     private static  void generateUsers(){
         users.put("Laura", generateCode("password"));
         users.put("Val", generateCode("mypassword"));
     }
 
+
+    /**
+     * create a JSON Object to generate correct responses
+     * @param status, Set HTTP status
+     * @param result, Set response from login service
+     * @param serverResponse, Set response from another server
+     * @return
+     */
     private static JsonObject createJson(int status, String result, String serverResponse){
         JsonObject json  =new JsonObject();
         json.addProperty("status", status);
@@ -157,6 +199,10 @@ public class App {
         return 4567; //returns default port if heroku-port isn't set (i.e. on localhost)
     }
 
+    /**
+     * Get default Keystore
+     * @return Keystore
+     */
     static String getKeyStore() {
         if (System.getenv("KEYSTORE") != null) {
             return System.getenv("KEYSTORE");
